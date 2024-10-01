@@ -1,8 +1,10 @@
 ﻿
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Shared.Infra.DTO;
 using Shared.Infra.Exceptions;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
@@ -13,16 +15,20 @@ namespace Shared.Infra.Middleware
     public class GlobalExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
-   
+        private readonly ActivitySource _activitySource;
+
+
 
         public GlobalExceptionHandlingMiddleware(
-            RequestDelegate next)
+            RequestDelegate next, ActivitySource activitySource)
         {
             _next = next;
+            _activitySource = activitySource;
         }
 
         public async Task Invoke(HttpContext context)
         {
+            using var activity = _activitySource.StartActivity("HandleRequest");
             try
             {
 
@@ -31,7 +37,10 @@ namespace Shared.Infra.Middleware
             }
             catch (Exception ex)
             {
+                activity.SetTag("exceptionType", ex.GetType().ToString());
+                activity.SetTag("stack", ex.StackTrace);
                 await HandleExceptionAsync(context, ex);
+
             }
         }
 
@@ -41,7 +50,8 @@ namespace Shared.Infra.Middleware
             HttpStatusCode status;
             object stackTrace;
             string message = ex.Message;
-
+            Log.Error(ex, ex.Message, ex.StackTrace);
+            
             if (ex is UnauthorizedAccessException)
             {
                 status = HttpStatusCode.Unauthorized;
@@ -64,7 +74,7 @@ namespace Shared.Infra.Middleware
             {
                 status = HttpStatusCode.InternalServerError;
                 stackTrace = ex.StackTrace;
-                Log.Error(ex,ex.Message,ex.StackTrace);
+               
             }
 
             var apiResponse = new ApiResponse<object>

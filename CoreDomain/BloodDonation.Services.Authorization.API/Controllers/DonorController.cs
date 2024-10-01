@@ -33,6 +33,7 @@ namespace BloodDonation.Services.Donors.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            throw new Exception("aiai");
             var result = await _donorService.GetAllAsync();
 
             return result.Match(

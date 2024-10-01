@@ -28,11 +28,6 @@ namespace BloodDonation.Services.Donors.Api
             services.AddBloodDonationInfraModules();
             services.AddBloodDonationApplicationModules();
 
-
-
-            
-
-
         }
 
         public void Configure(WebApplication app)
@@ -61,6 +56,8 @@ namespace BloodDonation.Services.Donors.Api
             app.MapControllers();
 
             app.AddGlobalErrorHandler();
+
+            
 
             try
             {
