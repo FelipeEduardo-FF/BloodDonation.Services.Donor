@@ -20,6 +20,17 @@ namespace BloodDonation.Services.Donors.Domain.Entities
             RhFactor = rhFactor;
         }
 
+        public void Update(string fullName, string email, DateTime birthDate, string gender, double weight, string bloodType, string rhFactor)
+        {
+            FullName = fullName;
+            Email = email;
+            BirthDate = birthDate;
+            Gender = gender;
+            Weight = weight;
+            BloodType = bloodType;
+            RhFactor = rhFactor;
+        }
+
         public string FullName { get; private set; }
         public string Email { get; private set; }
         public DateTime BirthDate { get; private set; }
