@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
-using BloodDonation.Services.Authorization.Infra.Persistence;
+using BloodDonation.Services.Donors.Infra.Persistence;
+using BloodDonation.Services.Donors.Domain.Repositories;
+using BloodDonation.Services.Donors.Infra.Persistence.Repositories;
 
-namespace BloodDonation.Services.Authorization.Infra
+namespace BloodDonation.Services.Donors.Infra
 {
     public static class BloodDonationInfraModules
     {
@@ -18,7 +20,7 @@ namespace BloodDonation.Services.Authorization.Infra
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
 
-
+            services.AddScoped<IDonorRepository, DonorRepository>();
 
             return services;
         }

@@ -1,7 +1,7 @@
-﻿using BloodDonation.Services.Authorization.Application.DTO;
+﻿using BloodDonation.Services.Donors.Application.DTO;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BloodDonation.Services.Authorization.Application
+namespace BloodDonation.Services.Donors.Application
 {
     public static class  BloodDonationApplicationModules
     {
