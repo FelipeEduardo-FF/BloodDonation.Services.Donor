@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Builder;
 using BloodDonation.Services.Donors.Infra.Persistence;
 using BloodDonation.Services.Donors.Domain.Repositories;
 using BloodDonation.Services.Donors.Infra.Persistence.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BloodDonation.Services.Donors.Infra
 {
@@ -14,6 +17,7 @@ namespace BloodDonation.Services.Donors.Infra
         {
             services.AddDatabase();
             services.AddRepositories();
+            services.AddAuthentication();
             return services;
         }       
         
@@ -50,5 +54,29 @@ namespace BloodDonation.Services.Donors.Infra
             return app;
         }
 
+        private static IServiceCollection AddAuthentication(this IServiceCollection services)
+        {
+            var serviceProvider = services.BuildServiceProvider();
+            var _configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            // Configurar autenticação JWT
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]!);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+            });
+            return services;
+        }
     }
 }

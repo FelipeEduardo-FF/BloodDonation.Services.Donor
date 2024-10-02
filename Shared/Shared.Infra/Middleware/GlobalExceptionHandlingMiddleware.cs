@@ -39,6 +39,7 @@ namespace Shared.Infra.Middleware
             {
                 activity.SetTag("exceptionType", ex.GetType().ToString());
                 activity.SetTag("stack", ex.StackTrace);
+                activity.SetTag("message", ex.Message);
                 await HandleExceptionAsync(context, ex);
 
             }
