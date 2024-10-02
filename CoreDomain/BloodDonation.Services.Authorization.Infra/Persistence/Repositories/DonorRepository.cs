@@ -28,7 +28,7 @@ namespace BloodDonation.Services.Donors.Infra.Persistence.Repositories
             return await _context.Donors.ToListAsync();
         }
 
-        public async Task CreateAsync(Donor donor)
+        public async Task AddAsync(Donor donor)
         {
             await _context.Donors.AddAsync(donor);
             await _context.SaveChangesAsync();

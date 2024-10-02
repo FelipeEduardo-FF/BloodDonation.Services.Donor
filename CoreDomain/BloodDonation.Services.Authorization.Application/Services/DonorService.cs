@@ -52,7 +52,7 @@ namespace BloodDonation.Services.Donors.Application.Services
         public async Task<Result<int>> CreateAsync(DonorInputModel inputModel)
         {
             var donor = _mapper.Map<Donor>(inputModel);
-            await _donorRepository.CreateAsync(donor);
+            await _donorRepository.AddAsync(donor);
             return OperationResult.Ok(donor.Id);
         }
 

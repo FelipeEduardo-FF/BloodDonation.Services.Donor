@@ -11,7 +11,7 @@ namespace BloodDonation.Services.Donors.Domain.Repositories
     {
         Task<Donor?> GetByIdAsync(int id);
         Task<List<Donor>> GetAllAsync();
-        Task CreateAsync(Donor donor);
+        Task AddAsync(Donor donor);
         Task UpdateAsync(Donor donor);
         Task DeleteAsync(Donor donor);
     }
