@@ -13,6 +13,7 @@ namespace BloodDonation.Services.Donors.Application
         {
             services.AddAutoMapper(typeof(EntityToDTOMapper));
             services.AddServices();
+            services.AddValidator();
             return services;
         }
         public static IServiceCollection AddServices(this IServiceCollection services)

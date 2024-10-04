@@ -19,7 +19,7 @@ namespace BloodDonation.Services.Donors.Application.DTO.Validations
 
             RuleFor(d => d.BirthDate)
                 .NotEmpty().WithMessage("Birth Date cannot be empty.")
-                .Must(b => b != default(DateTime)).WithMessage("Birth Date cannot be the default value.");
+                .Must(b => b != default(DateOnly)).WithMessage("Birth Date cannot be the default value.");
 
             RuleFor(d => d.Gender)
                 .NotEmpty().WithMessage("Gender cannot be empty.")
