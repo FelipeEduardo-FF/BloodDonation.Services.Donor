@@ -23,6 +23,11 @@ namespace BloodDonation.Services.Donors.Infra.Persistence.Repositories
             return await _context.Donors.FindAsync(id);
         }
 
+        public async Task<bool> ExistsDonorWithEmail(string email)
+        {
+            return await _context.Donors.AnyAsync(d=>d.Email.ToLower()==email.ToLower());
+        }
+
         public async Task<List<Donor>> GetAllAsync()
         {
             return await _context.Donors.ToListAsync();

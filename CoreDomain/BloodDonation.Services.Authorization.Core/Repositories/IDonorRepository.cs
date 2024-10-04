@@ -14,5 +14,6 @@ namespace BloodDonation.Services.Donors.Domain.Repositories
         Task AddAsync(Donor donor);
         Task UpdateAsync(Donor donor);
         Task DeleteAsync(Donor donor);
+        Task<bool> ExistsDonorWithEmail(string email);
     }
 }

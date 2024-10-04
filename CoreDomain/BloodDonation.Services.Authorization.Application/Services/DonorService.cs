@@ -51,6 +51,9 @@ namespace BloodDonation.Services.Donors.Application.Services
 
         public async Task<Result<int>> CreateAsync(DonorInputModel inputModel)
         {
+            if (await _donorRepository.ExistsDonorWithEmail(inputModel.Email))
+                return OperationResult.BadRequest<int>("A donor with the provided email already exists.");
+
             var donor = _mapper.Map<Donor>(inputModel);
             await _donorRepository.AddAsync(donor);
             return OperationResult.Ok(donor.Id);
