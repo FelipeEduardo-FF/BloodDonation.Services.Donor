@@ -1,6 +1,9 @@
 ﻿using BloodDonation.Services.Donors.Application.DTO;
 using BloodDonation.Services.Donors.Application.Services;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using BloodDonation.Services.Donors.Application.DTO.Validations;
 
 namespace BloodDonation.Services.Donors.Application
 {
@@ -18,5 +21,11 @@ namespace BloodDonation.Services.Donors.Application
             return services;
         }
 
+        public static IServiceCollection AddValidator(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssemblyContaining<DonorInputModelValidator>();
+            services.AddFluentValidationAutoValidation();
+            return services;
+        }
     }
 }
