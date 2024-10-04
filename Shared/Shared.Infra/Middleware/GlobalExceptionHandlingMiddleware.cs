@@ -33,13 +33,13 @@ namespace Shared.Infra.Middleware
             {
 
                 await _next(context);
-      
+
             }
             catch (Exception ex)
             {
-                activity.SetTag("exceptionType", ex.GetType().ToString());
-                activity.SetTag("stack", ex.StackTrace);
-                activity.SetTag("message", ex.Message);
+                activity?.SetTag("exceptionType", ex.GetType().ToString());
+                activity?.SetTag("stack", ex.StackTrace);
+                activity?.SetTag("message", ex.Message);
                 await HandleExceptionAsync(context, ex);
 
             }
@@ -49,10 +49,10 @@ namespace Shared.Infra.Middleware
         {
             var exceptionType = ex.GetType();
             HttpStatusCode status;
-            object stackTrace;
+            object? stackTrace;
             string message = ex.Message;
             Log.Error(ex, ex.Message, ex.StackTrace);
-            
+
             if (ex is UnauthorizedAccessException)
             {
                 status = HttpStatusCode.Unauthorized;
@@ -61,7 +61,7 @@ namespace Shared.Infra.Middleware
             else if (ex is ExceptionBase exceptionBase)
             {
                 if (exceptionBase is NotFoundException)
-                    status = HttpStatusCode.NotFound;            
+                    status = HttpStatusCode.NotFound;
                 else if (exceptionBase is PaymentRequiredException)
                     status = HttpStatusCode.PaymentRequired;
                 else if (exceptionBase is BadRequestException)
@@ -75,7 +75,7 @@ namespace Shared.Infra.Middleware
             {
                 status = HttpStatusCode.InternalServerError;
                 stackTrace = ex.StackTrace;
-               
+
             }
 
             var apiResponse = new ApiResponse<object>
@@ -85,7 +85,7 @@ namespace Shared.Infra.Middleware
                 Error = stackTrace
             };
 
-            
+
 
             var exceptionResult = JsonSerializer.Serialize(apiResponse);
             context.Response.ContentType = "application/json";
